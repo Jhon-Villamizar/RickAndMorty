@@ -1,0 +1,29 @@
+* {
+  margin: unset;
+  padding: unset;
+  .container {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 80%;
+  }
+  .search-bar {
+    background-color: #000;
+    height: 50px;
+    .search-content {
+      align-items: center;
+      display: flex;
+      flex-flow: flex wrap;  
+      height: 100%;
+      margin: 0 auto;
+      width: 80%;
+      .search-input{
+      }
+      .search-filters{
+      }
+    }
+    
+  }
+}
+
+
