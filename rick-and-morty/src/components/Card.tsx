@@ -9,22 +9,37 @@ const Card = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
+    const offset = (service.page-1) * 20;
+
+    const data = () => {
+      if(service.filter !== '') {
+        service.allCharacters.map((item: any) => {
+          if (item.name.toLowerCase().indexOf(service.filter)>-1) {
+            return item
+          }
+        })
+      } else {
+        return service.allCharacters
+      }
+    }
+
+    const currentPageData =  service.filter === ''? service.allCharacters
+      .slice(offset, offset + 20)
+      .map((item: any) => {
+        return <p key={item.id}>{item.name}</p>
+      }) : service.allCharacters.map((item: any) => {
+        item.name.toLowerCase();
+        if (item.name.toLowerCase().indexOf(service.filter)>-1) {
+          return <p key={item.id}>{item.name}</p>
+      }
+      })
+
     return(
         <>
             <h1>Card</h1>
+
             {
-                service.characters? service.characters.map((item: any) => {
-                    item.name.toLowerCase();
-                    if(service.filter !== '') {
-                        console.log('primer filter');
-                        
-                        if (item.name.toLowerCase().indexOf(service.filter)>-1) {
-                            return <p key={item.id}>{item.name}</p>
-                        }
-                    } else {
-                        return <p key={item.id}>{item.name}</p>
-                    }
-                }) : null
+              currentPageData
             }
         </>
     )
