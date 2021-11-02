@@ -21,6 +21,7 @@ const ServiceState = (props: any) => {
       try {
         const res = await fetch(route);
         const data = await res.json();
+        // eslint-disable-next-line array-callback-return
         data.results.map((item: any):any => {
           item.like = 0;
           item.dislike = 0;
@@ -43,7 +44,8 @@ const ServiceState = (props: any) => {
             const res = await fetch(`https://rickandmortyapi.com/api/character/?page=1`);
             const data = await res.json();
             dispatch({ type: GET_INFO, payload: data.info});
-            data.results.map((item: any) => {
+            // eslint-disable-next-line array-callback-return
+            data.results.map((item: any):void => {
               item.like = 0;
               item.dislike = 0;
               allData.push(item);

@@ -4,10 +4,10 @@ import ServiceContext from "../contexts/serviceContext";
 const SearchBar = () => {
     const service = useContext(ServiceContext);
     const [query, setQuery] = useState('');
-    // const [flag, setFlag] = useState<boolean>(null);
 
     useEffect(() => {
         service.searchCharacter(query);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[query]);
 
     const sortFlag = ():any => {

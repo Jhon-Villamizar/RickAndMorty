@@ -1,10 +1,11 @@
-import { link } from "fs";
 import React, { useContext, useEffect, useState } from "react";
 import ServiceContext from "../contexts/serviceContext";
 
 const Card = () => {
   const service = useContext(ServiceContext);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [like, setLike] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [dislike, setDislike] = useState(0);
 
   useEffect(() => {
@@ -60,6 +61,7 @@ const Card = () => {
             </div>
           );
         })
+      // eslint-disable-next-line array-callback-return
       : data.map((item: any) => {
           item.name.toLowerCase();
           if (item.name.toLowerCase().indexOf(service.filter) > -1) {
