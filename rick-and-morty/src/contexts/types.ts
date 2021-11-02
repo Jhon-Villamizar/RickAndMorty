@@ -3,3 +3,5 @@ export const GET_CHARACTERS = 'GET_CHARACTERS';
 export const GET_INFO = 'GET_INFO';
 export const SEARCH_CHARACTERS = 'SEARCH_CHARACTERS';
 export const UPLOAD_PAGE = 'UPLOAD_PAGE';
+export const DATA_SORT = 'DATA_SORT';
+

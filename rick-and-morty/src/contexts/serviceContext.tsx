@@ -1,15 +1,17 @@
 import { createContext } from 'react';
 
 interface context {
-    characters: any,
     allCharacters: any,
     filter: string,
     info: any,
     page: number,
+    like: number,
+    dislike: number,
+    sort: boolean,
     getService(): any,
     searchCharacter(word:string): any,
-    uploadPage(page:number): any,
     paginate(page:number): any,
+    dataSorting(flag: boolean): any,
 }
 
 const ServiceContext = createContext({} as context);

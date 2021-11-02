@@ -1,4 +1,4 @@
-import { GET_ALL_CHARACTERS, GET_CHARACTERS, GET_INFO, SEARCH_CHARACTERS, UPLOAD_PAGE } from './types';
+import { GET_ALL_CHARACTERS, GET_INFO, SEARCH_CHARACTERS, UPLOAD_PAGE, DATA_SORT } from './types';
 
 const ServiceReducer = (state: any, action: any) => {
     const {payload, type} = action;
@@ -8,11 +8,6 @@ const ServiceReducer = (state: any, action: any) => {
             return {
                 ...state,
                 allCharacters: payload,
-            }
-        case GET_CHARACTERS:
-            return {
-                ...state,
-                characters: payload,
             }
         case GET_INFO:
             return {
@@ -25,11 +20,14 @@ const ServiceReducer = (state: any, action: any) => {
                 filter: payload
             }
         case UPLOAD_PAGE:
-          console.log(state);
-
             return {
                 ...state,
                 page: payload
+            }
+        case DATA_SORT:
+            return {
+                ...state,
+                sort: payload
             }
         default:
             return state;

@@ -8,11 +8,11 @@ import Pagination from './components/Pagination';
 function App() {
 
   return (
-      <ServiceState clasName="container">
+      <ServiceState>
         <SearchBar/>
         <div className="container">
-          {/* <Card/> */}
-          <Pagination />
+          <Card/>
+            <Pagination />
         </div>
       </ServiceState>
 
