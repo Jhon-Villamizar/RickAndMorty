@@ -3,7 +3,6 @@ import './App.scss';
 import ServiceState from './contexts/serviceState';
 import Card from './components/Card';
 import SearchBar from './components/SearchBar';
-import Pagination from './components/Pagination';
 
 function App() {
 
@@ -12,7 +11,6 @@ function App() {
         <SearchBar/>
         <div className="container">
           <Card/>
-            <Pagination />
         </div>
       </ServiceState>
 

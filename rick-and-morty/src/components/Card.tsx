@@ -3,111 +3,143 @@ import ServiceContext from "../contexts/serviceContext";
 
 const Card = () => {
   const service = useContext(ServiceContext);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [like, setLike] = useState<number>(0);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [dislike, setDislike] = useState(0);
+  const [dataEdit, setDataEdit] = useState(false);
 
   useEffect(() => {
     service.getService();
-    if(service.sort) {
-
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [service.filter]);
+  }, []);
 
-  const offset = (service.page - 1) * 20;
-  const sortData = service.sort? [...service.allCharacters].sort((a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0)) : [...service.allCharacters].sort((b, a) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0));
+  const edit = (item: any) => {
+      setDataEdit(!dataEdit)
+      item.flag = dataEdit;
+  }
+
+  const editName = (value: any, currentItem: any) => {
+    currentItem.name.first = value;
+  }
+  const editLastName = (value: any, currentItem: any) => {
+    currentItem.name.last = value;
+  }
+  const editEmail = (value: any, currentItem: any) => {
+    currentItem.email = value;
+  }
+  const editCell = (value: any, currentItem: any) => {
+    currentItem.cell = value;
+  }
+  const editCity = (value: any, currentItem: any) => {
+    currentItem.location.city = value;
+  }
+  const editState = (value: any, currentItem: any) => {
+    currentItem.location.state = value;
+  }
+
+  const sortData = service.sort? [...service.allCharacters].sort((a, b) => (a.name.first > b.name.first ? 1 : a.name.first < b.name.first ? -1 : 0)) : [...service.allCharacters].sort((b, a) => (a.name.first > b.name.first ? 1 : a.name.first < b.name.first ? -1 : 0));
   const data = service.sort === null? [...service.allCharacters] : sortData;
 
   const currentPageData =
     service.filter === ""
-      ? data.slice(offset, offset + 20).map((item: any) => {
+      ? data.map((item: any)=> {
           return (
-            <div className="card" key={item.id}>
-              <img
-                src={item.image}
-                alt={item.name}
-              />
-              <div className="container__text">
-                <h1 title={item.name}>{item.name}</h1>
-                <div className="votes">
-                  <div>
-                    <span><i className="fas fa-heart"></i></span><p>{item.like}</p>
+            <div className="card" key={item.cell}>
+                <div className="header-card">
+                  <span><i className="far fa-edit" onClick={() => edit(item)}></i></span>
+                    <h1 className={!item.flag? 'show' : 'none'} title={item.name.first}>{item.name.first} {item.name.last}</h1>
+                    <div className={item.flag? 'show' : 'none'}>
+                      <input placeholder={'Name: '+item.name.first} onChange={(event) => {editName(event.target.value, item)}}/>
+                      <input placeholder={'Lastname: '+item.name.last} onChange={(event) => {editLastName(event.target.value, item)}}/>
+                    </div>
+                </div>
+                <div className="body-card">
+                  <div className="image-content">
+                    <img
+                    src={item.picture.large}
+                    alt={item.name.first}
+                  />
                   </div>
-                  <div>
-                    <span><i className="fas fa-heart-broken"></i></span><p>{item.dislike}</p>
+                  <div className="container__text">
+                    <div className={!item.flag? 'container__text__timing show' : 'container__text__timing none'}>
+                      <div className="container__text__timing_time">
+                        <p>{item.email}</p>
+                      </div>
+                      <div className="container__text__timing_time">
+                        <p>{item.cell}</p>
+                      </div>
+                      <div className="container__text__timing_time">
+                        <p >{item.location.city}, {item.location.state}</p>
+                      </div>
+                    </div>
+                    <div className={item.flag? 'container__text__input show' : 'container__text__input none'}>
+                      <div className="input-text">
+                        <input placeholder={'Email: '+item.email} onChange={(event) => {editEmail(event.target.value, item)}}/>
+                      </div>
+                      <div className="input-text">
+                        <input placeholder={'CellPhone: '+item.cell} onChange={(event) => {editCell(event.target.value, item)}}/>
+                      </div>
+                      <div className="input-text">
+                        <input placeholder={'City: '+item.location.city} onChange={(event) => {editCity(event.target.value, item)}}/>
+                        <input placeholder={'State: '+item.location.state} onChange={(event) => {editState(event.target.value, item)}}/>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="container__text__timing">
-                  <div className="container__text__timing_time">
-                    <h2>status</h2>
-                    <p>{item.status}</p>
-                  </div>
-                  <div className="container__text__timing_time">
-                    <h2>species</h2>
-                    <p>{item.species}</p>
-                  </div>
-                  <div className="container__text__timing_time">
-                    <h2>location</h2>
-                    <p title={item.location.name}>{item.location.name}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="votes-buttons">
-                <button className="like" onClick={() => setLike(item.like += 1)}><i className="fas fa-thumbs-up"></i></button>
-                <button className="dislike" onClick={() => setDislike(item.dislike += 1)}><i className="fas fa-thumbs-up"></i></button>
-              </div>
             </div>
           );
         })
       // eslint-disable-next-line array-callback-return
       : data.map((item: any) => {
-          item.name.toLowerCase();
-          if (item.name.toLowerCase().indexOf(service.filter) > -1) {
+          if (item.name.first.toLowerCase().indexOf(service.filter) > -1) {
             return (
-              <div className="card" key={item.id}>
-              <img
-                src={item.image}
-                alt={item.name}
-              />
-              <div className="container__text">
-                <h1 title={item.name}>{item.name}</h1>
-                <div className="votes">
-                  <div>
-                    <span><i className="fas fa-heart"></i></span><p>{item.like}</p>
-                  </div>
-                  <div>
-                    <span><i className="fas fa-heart-broken"></i></span><p>{item.dislike}</p>
-                  </div>
+              <div className="card" key={item.cell}>
+                <div className="header-card">
+                  <span><i className="far fa-edit" onClick={() => edit(item)}></i></span>
+                    <h1 className={!item.flag? 'show' : 'none'} title={item.name.first}>{item.name.first} {item.name.last}</h1>
+                    <div className={item.flag? 'show' : 'none'}>
+                      <input placeholder={'Name: '+item.name.first} onChange={(event) => {editName(event.target.value, item)}}/>
+                      <input placeholder={'Lastname: '+item.name.last} onChange={(event) => {editLastName(event.target.value, item)}}/>
+                    </div>
                 </div>
-                <div className="container__text__timing">
-                  <div className="container__text__timing_time">
-                    <h2>status</h2>
-                    <p>{item.status}</p>
+                <div className="body-card">
+                  <div className="image-content">
+                    <img
+                    src={item.picture.large}
+                    alt={item.name.first}
+                  />
                   </div>
-                  <div className="container__text__timing_time">
-                    <h2>species</h2>
-                    <p>{item.species}</p>
-                  </div>
-                  <div className="container__text__timing_time">
-                    <h2>location</h2>
-                    <p title={item.location.name}>{item.location.name}</p>
+                  <div className="container__text">
+                    <div className={!item.flag? 'container__text__timing show' : 'container__text__timing none'}>
+                      <div className="container__text__timing_time">
+                        <p>{item.email}</p>
+                      </div>
+                      <div className="container__text__timing_time">
+                        <p>{item.cell}</p>
+                      </div>
+                      <div className="container__text__timing_time">
+                        <p >{item.location.city}, {item.location.state}</p>
+                      </div>
+                    </div>
+                    <div className={item.flag? 'container__text__input show' : 'container__text__input none'}>
+                      <div className="input-text">
+                        <input placeholder={'Email: '+item.email} onChange={(event) => {editEmail(event.target.value, item)}}/>
+                      </div>
+                      <div className="input-text">
+                        <input placeholder={'CellPhone: '+item.cell} onChange={(event) => {editCell(event.target.value, item)}}/>
+                      </div>
+                      <div className="input-text">
+                        <input placeholder={'City: '+item.location.city} onChange={(event) => {editCity(event.target.value, item)}}/>
+                        <input placeholder={'State: '+item.location.state} onChange={(event) => {editState(event.target.value, item)}}/>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="votes-buttons">
-                <button className="like" onClick={() => setLike(item.like += 1)}><i className="fas fa-thumbs-up"></i></button>
-                <button className="dislike" onClick={() => setDislike(item.dislike += 1)}><i className="fas fa-thumbs-up"></i></button>
-              </div>
-            </div>
-              );
+                );
           }
         });
 
   return (
     <div>
-      <h1>Rick & Morty API</h1>
+      <h1 className="title">User Generator API</h1>
       <div className="card-container">
         {currentPageData}
       </div>
@@ -116,3 +148,4 @@ const Card = () => {
 };
 
 export default Card;
+

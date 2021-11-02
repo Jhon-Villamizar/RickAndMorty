@@ -1,7 +1,7 @@
 import React,{ useReducer } from 'react';
 import ServiceContext from './serviceContext';
 import ServiceReducer from "./serviceReducer";
-import { GET_ALL_CHARACTERS, GET_INFO, SEARCH_CHARACTERS, UPLOAD_PAGE, DATA_SORT } from './types';
+import { GET_ALL_CHARACTERS, SEARCH_CHARACTERS, UPLOAD_PAGE, DATA_SORT } from './types';
 
 const ServiceState = (props: any) => {
     const initialState = {
@@ -17,42 +17,15 @@ const ServiceState = (props: any) => {
 
     const [state, dispatch] = useReducer(ServiceReducer, initialState);
 
-    const getAllCharacters = async (route: string, allData: any) => {
-      try {
-        const res = await fetch(route);
-        const data = await res.json();
-        // eslint-disable-next-line array-callback-return
-        data.results.map((item: any):any => {
-          item.like = 0;
-          item.dislike = 0;
-          allData.push(item);
-        });
-
-          if (data.info.next) {
-            getAllCharacters(data.info.next, allData);
-          } else {
-            dispatch({ type: GET_ALL_CHARACTERS, payload: allData});
-          }
-    } catch (error) {
-        console.error(error);
-    }
-    }
-
     const getService = async () => {
-      let allData:any[] = [];
         try {
-            const res = await fetch(`https://rickandmortyapi.com/api/character/?page=1`);
+            const res = await fetch(`https://randomuser.me/api/?results=12&format=pretty`);
             const data = await res.json();
-            dispatch({ type: GET_INFO, payload: data.info});
             // eslint-disable-next-line array-callback-return
-            data.results.map((item: any):void => {
-              item.like = 0;
-              item.dislike = 0;
-              allData.push(item);
-            });
-            if (data.info.next) {
-              getAllCharacters(data.info.next, allData);
-            }
+            data.results.map((item: any) => {
+              item.flag = false
+            })
+            dispatch({ type: GET_ALL_CHARACTERS, payload: data.results});
         } catch (error) {
             console.error(error);
         }
@@ -70,10 +43,8 @@ const ServiceState = (props: any) => {
       dispatch({ type: DATA_SORT, payload: flag })
     }
 
-
-
     return(
-        <ServiceContext.Provider value={{allCharacters: state.allCharacters, info: state.info, filter: state.filter, page: state.page, like: state.like, dislike: state.dislike, sort: state.sort, getService, searchCharacter, paginate, dataSorting}}>
+        <ServiceContext.Provider value={{allCharacters: state.allCharacters, filter: state.filter, page: state.page, like: state.like, dislike: state.dislike, sort: state.sort, getService, searchCharacter, paginate, dataSorting}}>
             {props.children}
         </ServiceContext.Provider>
     )

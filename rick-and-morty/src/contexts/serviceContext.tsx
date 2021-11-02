@@ -3,7 +3,6 @@ import { createContext } from 'react';
 interface context {
     allCharacters: any,
     filter: string,
-    info: any,
     page: number,
     like: number,
     dislike: number,
